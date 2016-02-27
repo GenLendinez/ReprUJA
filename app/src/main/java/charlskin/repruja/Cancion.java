@@ -13,9 +13,11 @@ public class Cancion {
         ID=IDS;
     }
     public String getTitulo(){
+
         return titulo;
     }
     public String getArtista(){
+    // esto es una prueba
         return artista;
     }
     public long getID(){
