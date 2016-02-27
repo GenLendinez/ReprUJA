@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ReprUJA</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_principal">Bienvenido a ReprUJA, por favor seleccione una opción</string>
+    <string name="boton_videoS">Reproducir vídeos</string>
+    <string name="boton_audioS">Reproducir audio</string>
+    <string name="boton_streamingS">Reproducir streaming</string>
+</resources>
