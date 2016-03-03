@@ -17,7 +17,7 @@ public class Cancion {
         return titulo;
     }
     public String getArtista(){
-    // esto es una prueba
+    // y esta otra prueba
         return artista;
     }
     public long getID(){
