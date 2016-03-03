@@ -13,8 +13,8 @@ import android.widget.ListView;
 
 public class Audio extends AppCompatActivity {
 
-    private ArrayList<Cancion> listaCanciones;
-    private ArrayAdapter<Cancion> adaptador;
+    private ArrayList<String> listaCanciones;
+    private ArrayAdapter<String> adaptador;
     private ListView vistaCanciones;
 
     @Override
@@ -22,14 +22,9 @@ public class Audio extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio);
         vistaCanciones=(ListView)findViewById(R.id.listaCanciones);
-        listaCanciones=new ArrayList<Cancion>();
+        listaCanciones=new ArrayList<String>();
         getListaCanciones();
-        Collections.sort(listaCanciones, new Comparator<Cancion>() {
-            public int compare(Cancion a, Cancion b) {
-                return a.getTitulo().compareTo(b.getTitulo());
-            }
-        });
-        adaptador=new ArrayAdapter<Cancion>(this,android.R.layout.simple_list_item_1,listaCanciones);
+        adaptador= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listaCanciones);
 
         vistaCanciones.setAdapter(adaptador);
     }
@@ -48,7 +43,7 @@ public class Audio extends AppCompatActivity {
                 long thisId = musicCursor.getLong(idColumn);
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
-                listaCanciones.add(new Cancion(thisTitle, thisArtist,thisId));
+                listaCanciones.add(thisTitle);
             }
             while (musicCursor.moveToNext());
         }
