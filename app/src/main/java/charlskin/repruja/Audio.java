@@ -29,7 +29,8 @@ public class Audio extends AppCompatActivity {
                 return a.getTitulo().compareTo(b.getTitulo());
             }
         });
-        adaptador=new ArrayAdapter<Cancion>(this,R.layout.activity_audio,listaCanciones);
+        adaptador=new ArrayAdapter<Cancion>(this,android.R.layout.simple_list_item_1,listaCanciones);
+
         vistaCanciones.setAdapter(adaptador);
     }
     public void getListaCanciones() {
