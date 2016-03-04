@@ -1,5 +1,6 @@
 package charlskin.repruja;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -42,18 +43,8 @@ public class Audio extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView nombre=(TextView) view;
-                for (int i=0;i<listaCanciones.size();i++){
-                    if(listaCanciones.get(i).getTitulo()==nombre.getText()){
-                        MediaPlayer reproductor= new MediaPlayer();
-                        try {
-                            reproductor.setDataSource(listaCanciones.get(i).getRuta());
-                            reproductor.prepare();
-                            reproductor.start();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+                Intent transicion_menu_audio=new Intent(Audio.this,Menu_reproductor_audio.class);
+                transicion_menu_audio.putExtra("Titulo",nombre.getText());
             }
         });
     }
@@ -61,7 +52,6 @@ public class Audio extends AppCompatActivity {
         ContentResolver musicResolver = getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
-
         if(musicCursor!=null && musicCursor.moveToFirst()){
             int titleColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.TITLE);
