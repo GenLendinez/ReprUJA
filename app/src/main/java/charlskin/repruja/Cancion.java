@@ -7,18 +7,22 @@ public class Cancion {
     private String titulo;
     private String artista;
     private long ID;
-    public Cancion(String titu,String arti, long IDS){
+    private String ruta;
+    public Cancion(String titu,String arti, long IDS,String path){
         titulo=titu;
         artista=arti;
         ID=IDS;
+        ruta=path;
     }
     public String getTitulo(){
 
         return titulo;
     }
     public String getArtista(){
-    // y esta otra prueba
         return artista;
+    }
+    public String getRuta(){
+        return ruta;
     }
     public long getID(){
         return ID;
