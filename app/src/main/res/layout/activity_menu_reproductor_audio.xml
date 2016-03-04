@@ -10,7 +10,7 @@
     <ImageButton
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:id="@+id/imageButton"
+        android:id="@+id/boton_play"
         android:background="@drawable/play_64"
 
         android:layout_marginBottom="86dp"
@@ -20,22 +20,22 @@
     <ImageButton
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:id="@+id/imageButton2"
+        android:id="@+id/boton_siguiente"
         android:background="@drawable/next"
-        android:layout_alignTop="@+id/imageButton"
-        android:layout_toRightOf="@+id/imageButton"
-        android:layout_toEndOf="@+id/imageButton"
+        android:layout_alignTop="@+id/boton_play"
+        android:layout_toRightOf="@+id/boton_play"
+        android:layout_toEndOf="@+id/boton_play"
         android:layout_marginLeft="37dp"
         android:layout_marginStart="37dp" />
 
     <ImageButton
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:id="@+id/imageButton3"
+        android:id="@+id/boton_anterior"
         android:background="@drawable/previous"
-        android:layout_alignTop="@+id/imageButton"
-        android:layout_toLeftOf="@+id/imageButton"
-        android:layout_toStartOf="@+id/imageButton"
+        android:layout_alignTop="@+id/boton_play"
+        android:layout_toLeftOf="@+id/boton_play"
+        android:layout_toStartOf="@+id/boton_play"
         android:layout_marginRight="39dp"
         android:layout_marginEnd="39dp" />
 
@@ -43,22 +43,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TituloCancion"
-        android:id="@+id/textView2"
+        android:id="@+id/campo_titulo"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/imageButton3"
-        android:layout_alignStart="@+id/imageButton3"
-        android:layout_alignRight="@+id/imageButton2"
-        android:layout_alignEnd="@+id/imageButton2" />
+        android:layout_alignLeft="@+id/boton_anterior"
+        android:layout_alignStart="@+id/boton_anterior"
+        android:layout_alignRight="@+id/boton_siguiente"
+        android:layout_alignEnd="@+id/boton_siguiente" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TituloArtista"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/textView2"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_alignStart="@+id/textView2"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_alignEnd="@+id/textView2" />
+        android:id="@+id/campo_artista"
+        android:layout_below="@+id/campo_titulo"
+        android:layout_alignLeft="@+id/campo_titulo"
+        android:layout_alignStart="@+id/campo_titulo"
+        android:layout_alignRight="@+id/campo_titulo"
+        android:layout_alignEnd="@+id/campo_titulo" />
 
 </RelativeLayout>

@@ -44,7 +44,10 @@ public class Audio extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView nombre=(TextView) view;
                 Intent transicion_menu_audio=new Intent(Audio.this,Menu_reproductor_audio.class);
-                transicion_menu_audio.putExtra("Titulo",nombre.getText());
+                transicion_menu_audio.putExtra("Titulo",nombre.getText()); //Manda el dato nombre.getText() con nombre titulo a la siguiente actividad "menu_reproductor_audio
+                transicion_menu_audio.putExtra("ListaCanciones",listaCanciones);
+
+                startActivity(transicion_menu_audio);
             }
         });
     }
