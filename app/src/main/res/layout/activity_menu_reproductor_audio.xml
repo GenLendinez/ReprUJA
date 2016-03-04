@@ -42,13 +42,23 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ImagenCancion"
+        android:text="TituloCancion"
         android:id="@+id/textView2"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="50dp"
         android:layout_alignLeft="@+id/imageButton3"
         android:layout_alignStart="@+id/imageButton3"
         android:layout_alignRight="@+id/imageButton2"
         android:layout_alignEnd="@+id/imageButton2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TituloArtista"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_alignRight="@+id/textView2"
+        android:layout_alignEnd="@+id/textView2" />
 
 </RelativeLayout>
