@@ -72,7 +72,7 @@ public class Audio extends AppCompatActivity {
             int path_fileC= musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
             do {
                 long thisId = musicCursor.getLong(idColumn);
-                String path_file= musicCursor.getString(path_fileC);
+                String path_file= musicCursor.getString(path_fileC); // ruta absoluta
                 System.out.println(path_file);
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
