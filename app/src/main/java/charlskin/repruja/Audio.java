@@ -46,7 +46,6 @@ public class Audio extends AppCompatActivity {
                 Intent transicion_menu_audio=new Intent(Audio.this,Menu_reproductor_audio.class);
                 transicion_menu_audio.putExtra("Titulo",nombre.getText()); //Manda el dato nombre.getText() con nombre titulo a la siguiente actividad "menu_reproductor_audio
                 transicion_menu_audio.putExtra("ListaCanciones",listaCanciones);
-
                 startActivity(transicion_menu_audio);
             }
         });
@@ -58,22 +57,19 @@ public class Audio extends AppCompatActivity {
         if(musicCursor!=null && musicCursor.moveToFirst()){
             int titleColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.TITLE);
-            int idColumn = musicCursor.getColumnIndex
-                    (android.provider.MediaStore.Audio.Media._ID);
             int artistColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.ARTIST);
             int path_fileC= musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
             do {
-                long thisId = musicCursor.getLong(idColumn);
                 String path_file= musicCursor.getString(path_fileC); // ruta absoluta
-                System.out.println(path_file);
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
-                listaCanciones.add(new Cancion(thisTitle,thisArtist,thisId,path_file));
+                listaCanciones.add(new Cancion(thisTitle,thisArtist,path_file));
                 listaCancionesN.add(thisTitle);
             }
             while (musicCursor.moveToNext());
         }
+        musicCursor.close();
 
     }
 }

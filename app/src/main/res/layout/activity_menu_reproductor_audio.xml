@@ -40,25 +40,26 @@
         android:layout_marginEnd="39dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TituloCancion"
+        android:text="Desconocido"
+        android:gravity="center"
+        android:textSize="30sp"
         android:id="@+id/campo_titulo"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/boton_anterior"
-        android:layout_alignStart="@+id/boton_anterior"
-        android:layout_alignRight="@+id/boton_siguiente"
-        android:layout_alignEnd="@+id/boton_siguiente" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TituloArtista"
+        android:text="Desconocido"
+        android:gravity="center"
+        android:textSize="30sp"
         android:id="@+id/campo_artista"
+        android:layout_marginTop="52dp"
         android:layout_below="@+id/campo_titulo"
-        android:layout_alignLeft="@+id/campo_titulo"
-        android:layout_alignStart="@+id/campo_titulo"
-        android:layout_alignRight="@+id/campo_titulo"
-        android:layout_alignEnd="@+id/campo_titulo" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
