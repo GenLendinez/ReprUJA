@@ -15,12 +15,10 @@ public class Cancion implements Parcelable{
         artista=arti;
         ruta=path;
     }
-    public Cancion(Parcel dentro){
-        String[] datosC= new String[3];
-        dentro.readStringArray(datosC);
-        datosC[0]=this.titulo;
-        datosC[1]=this.artista;
-        datosC[2]=this.ruta;
+    protected Cancion(Parcel in) {
+        titulo = in.readString();
+        artista = in.readString();
+        ruta = in.readString();
     }
     public String getTitulo(){
         return titulo;
@@ -32,21 +30,24 @@ public class Cancion implements Parcelable{
 
     @Override
     public int describeContents() {
-        return 0;
+        return this.hashCode();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] {this.titulo,
-                this.artista,
-                this.ruta});
+        dest.writeString(titulo);
+        dest.writeString(artista);
+        dest.writeString(ruta);
     }
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Cancion> CREATOR = new Parcelable.Creator<Cancion>() {
+        @Override
         public Cancion createFromParcel(Parcel in) {
             return new Cancion(in);
         }
-        public Cancion[] newArray(int tama) {
-            return new Cancion[tama];
+        @Override
+        public Cancion[] newArray(int size) {
+            return new Cancion[size];
         }
     };
 }

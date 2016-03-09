@@ -37,7 +37,7 @@ public class Audio extends AppCompatActivity {
         listaCancionesN=new ArrayList<String>();
         listaCanciones=new ArrayList<Cancion>();
         getListaCanciones();
-        adaptador= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listaCancionesN);
+        adaptador= new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,listaCancionesN);
         vistaCanciones.setAdapter(adaptador);
         vistaCanciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -45,7 +45,7 @@ public class Audio extends AppCompatActivity {
                 TextView nombre=(TextView) view;
                 Intent transicion_menu_audio=new Intent(Audio.this,Menu_reproductor_audio.class);
                 transicion_menu_audio.putExtra("Titulo",nombre.getText()); //Manda el dato nombre.getText() con nombre titulo a la siguiente actividad "menu_reproductor_audio
-                transicion_menu_audio.putExtra("ListaCanciones",listaCanciones);
+                transicion_menu_audio.putParcelableArrayListExtra("listaCanciones",listaCanciones);
                 startActivity(transicion_menu_audio);
             }
         });
