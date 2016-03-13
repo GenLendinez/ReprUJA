@@ -5,7 +5,6 @@ package charlskin.repruja;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -14,8 +13,10 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
+import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Menu_reproductor_audio extends AppCompatActivity implements View.OnClickListener{
 
@@ -24,17 +25,11 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
     private ImageButton botonplay,botonnext,botonprevious;
     private TextView campoTitulo,campoArtista;
     private SeekBar barra_duracion;
+    private Timer mei= new Timer();
     private String tituloActual,artistaActual,rutaActual;
+    private ScheduledExecutorService gestorHilos;
     private int cancionActual;
     private boolean reproduciendo;
-    private Handler hamlet;
-    private Runnable abuela=new Runnable() {
-        @Override
-        public void run() {
-
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,30 +37,14 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
         Bundle extra=getIntent().getExtras();
         cancionActual=-1;
         artistaActual=rutaActual="null";
-        hamlet=new Handler() {
-            @Override
-            public void close() {
-            }
-
-            @Override
-            public void flush() {
-
-            }
-
-            @Override
-            public void publish(LogRecord record) {
-
-            }
-        };
         reproduciendo=true;
         if (extra!=null) {
             tituloActual = extra.getString("Titulo");
-            ArrayList<Cancion> Renne = extra.getParcelableArrayList("listaCanciones");
-            listaCancion=new ArrayList<Cancion>(Renne.size());
-            listaCancion.addAll(Renne);
+            listaCancion = extra.getParcelableArrayList("listaCanciones");
         }
         reproductor=new MediaPlayer();
         botonplay=(ImageButton) findViewById(R.id.boton_play);
+        gestorHilos= Executors.newScheduledThreadPool(1);
         botonnext=(ImageButton) findViewById(R.id.boton_siguiente);
         barra_duracion=(SeekBar) findViewById(R.id.dura_cancion);
         botonprevious=(ImageButton) findViewById(R.id.boton_anterior);
@@ -76,6 +55,21 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
         } catch (IOException e) {
             e.printStackTrace();
         }
+        barra_duracion.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    seekBar.setProgress(progress);
+                    reproductor.seekTo(progress);
+                }
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
         botonplay.setOnClickListener(this);
         botonprevious.setOnClickListener(this);
         botonnext.setOnClickListener(this);
@@ -87,7 +81,6 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
                 artistaActual=listaCancion.get(i).getArtista();
                 rutaActual=listaCancion.get(i).getRuta();
                 cancionActual=i;
-                Toast.makeText(Menu_reproductor_audio.this, "HAIL TO SATAN", Toast.LENGTH_SHORT).show();
             }
         }
         try {
@@ -95,10 +88,14 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
             campoTitulo.setText(tituloActual);
             reproductor.setDataSource(rutaActual);
             reproductor.prepare();
-            reproductor.start();
             barra_duracion.setMax(reproductor.getDuration());
-            actualizarBarra();
-            //hiloDeCoser.run();
+            reproductor.start();
+            gestorHilos.scheduleWithFixedDelay(new Runnable() {
+                @Override
+                public void run() {
+                    barra_duracion.setProgress(reproductor.getCurrentPosition());
+                }
+            },1,1, TimeUnit.MILLISECONDS);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
@@ -109,9 +106,6 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
             e.printStackTrace();
         }
     }
-    void actualizarBarra(){
-        barra_duracion.setProgress(reproductor.getCurrentPosition());
-    }
     void reproducir() throws IOException {
         campoArtista.setText(listaCancion.get(cancionActual).getArtista());
         campoTitulo.setText(listaCancion.get(cancionActual).getTitulo());
@@ -119,6 +113,7 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
         reproductor=new MediaPlayer();
         reproductor.setDataSource(listaCancion.get(cancionActual).getRuta());
         reproductor.prepare();
+        barra_duracion.setMax(reproductor.getDuration());
         reproductor.start();
     }
     @Override
@@ -126,7 +121,7 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
         switch(v.getId()){
             case R.id.boton_play:
                 if (!reproduciendo ) {
-                    //botonplay.setBackground(getDrawable(R.drawable.pauseb)); Aqui hay un problema con la version de la API ya lo solucionaremos
+                    //botonplay.setBackground(getDrawable(R.drawable.pauseb)); //Aqui hay un problema con la version de la API ya lo solucionaremos
                     reproductor.start();
                     reproduciendo=true;
                 }else{
@@ -149,6 +144,9 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                break;
+            case R.id.dura_cancion:
+                System.out.println("pene");
                 break;
         }
     }
