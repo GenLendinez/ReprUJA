@@ -5,23 +5,35 @@ package charlskin.repruja;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 public class Menu_reproductor_audio extends AppCompatActivity implements View.OnClickListener{
 
-    MediaPlayer reproductor;
-    ArrayList<Cancion> listaCancion;
-    ImageButton botonplay,botonnext,botonprevious;
-    TextView campoTitulo,campoArtista;
-    String tituloActual,artistaActual,rutaActual;
-    int cancionActual;
-    boolean reproduciendo;
+    private MediaPlayer reproductor;
+    private ArrayList<Cancion> listaCancion;
+    private ImageButton botonplay,botonnext,botonprevious;
+    private TextView campoTitulo,campoArtista;
+    private SeekBar barra_duracion;
+    private String tituloActual,artistaActual,rutaActual;
+    private int cancionActual;
+    private boolean reproduciendo;
+    private Handler hamlet;
+    private Runnable abuela=new Runnable() {
+        @Override
+        public void run() {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +42,21 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
         Bundle extra=getIntent().getExtras();
         cancionActual=-1;
         artistaActual=rutaActual="null";
+        hamlet=new Handler() {
+            @Override
+            public void close() {
+            }
+
+            @Override
+            public void flush() {
+
+            }
+
+            @Override
+            public void publish(LogRecord record) {
+
+            }
+        };
         reproduciendo=true;
         if (extra!=null) {
             tituloActual = extra.getString("Titulo");
@@ -40,6 +67,7 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
         reproductor=new MediaPlayer();
         botonplay=(ImageButton) findViewById(R.id.boton_play);
         botonnext=(ImageButton) findViewById(R.id.boton_siguiente);
+        barra_duracion=(SeekBar) findViewById(R.id.dura_cancion);
         botonprevious=(ImageButton) findViewById(R.id.boton_anterior);
         campoTitulo=(TextView) findViewById(R.id.campo_titulo);
         campoArtista=(TextView)findViewById(R.id.campo_artista);
@@ -68,6 +96,9 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
             reproductor.setDataSource(rutaActual);
             reproductor.prepare();
             reproductor.start();
+            barra_duracion.setMax(reproductor.getDuration());
+            actualizarBarra();
+            //hiloDeCoser.run();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
@@ -77,6 +108,9 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+    }
+    void actualizarBarra(){
+        barra_duracion.setProgress(reproductor.getCurrentPosition());
     }
     void reproducir() throws IOException {
         campoArtista.setText(listaCancion.get(cancionActual).getArtista());
