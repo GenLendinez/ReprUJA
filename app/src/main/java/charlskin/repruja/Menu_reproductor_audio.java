@@ -2,7 +2,10 @@ package charlskin.repruja;
 
 
 
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,13 +25,14 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
 
     private MediaPlayer reproductor;
     private ArrayList<Cancion> listaCancion;
+    private Handler mago=new Handler();
     private ImageButton botonplay,botonnext,botonprevious;
-    private TextView campoTitulo,campoArtista;
+    private TextView campoTitulo,campoArtista,duracionAct,duracionTo;
     private SeekBar barra_duracion;
     private Timer mei= new Timer();
     private String tituloActual,artistaActual,rutaActual;
     private ScheduledExecutorService gestorHilos;
-    private int cancionActual;
+    private int cancionActual,minutos,segundos,minutosTo,segundosTo;
     private boolean reproduciendo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,8 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
         gestorHilos= Executors.newScheduledThreadPool(1);
         botonnext=(ImageButton) findViewById(R.id.boton_siguiente);
         barra_duracion=(SeekBar) findViewById(R.id.dura_cancion);
+        duracionAct=(TextView) findViewById(R.id.duracionActualizada);
+        duracionTo=(TextView)findViewById(R.id.duracionTotal);
         botonprevious=(ImageButton) findViewById(R.id.boton_anterior);
         campoTitulo=(TextView) findViewById(R.id.campo_titulo);
         campoArtista=(TextView)findViewById(R.id.campo_artista);
@@ -94,6 +100,19 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
                 @Override
                 public void run() {
                     barra_duracion.setProgress(reproductor.getCurrentPosition());
+                    mago.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            segundos=reproductor.getCurrentPosition()/1000;
+                            minutos=segundos / 60;
+                            segundos= segundos % 60;
+                            duracionAct.setText(minutos+":"+segundos);
+                            segundosTo=reproductor.getDuration()/1000;
+                            minutosTo=segundosTo/60;
+                            segundosTo=segundosTo%60;
+                            duracionTo.setText((minutosTo-minutos)+":"+(segundosTo-segundos));
+                        }
+                    });
                 }
             },1,1, TimeUnit.MILLISECONDS);
         } catch (IOException e) {
@@ -121,10 +140,11 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
         switch(v.getId()){
             case R.id.boton_play:
                 if (!reproduciendo ) {
-                    //botonplay.setBackground(getDrawable(R.drawable.pauseb)); //Aqui hay un problema con la version de la API ya lo solucionaremos
+                    botonplay.setImageResource(R.drawable.play_64);
                     reproductor.start();
                     reproduciendo=true;
                 }else{
+                    botonplay.setImageResource(R.drawable.pauseb);
                     reproductor.pause();
                     reproduciendo=false;
                 }
