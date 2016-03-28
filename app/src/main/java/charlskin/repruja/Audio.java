@@ -34,7 +34,7 @@ public class Audio extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio);
         vistaCanciones=(ListView)findViewById(R.id.listaCanciones);
-        listaCancionesN=new ArrayList<String>();
+        listaCancionesN=new ArrayList<String>(); // -.-
         listaCanciones=new ArrayList<Cancion>();
         getListaCanciones();
         adaptador= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listaCancionesN);
