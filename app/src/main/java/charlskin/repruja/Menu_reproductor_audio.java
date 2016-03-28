@@ -1,9 +1,4 @@
 package charlskin.repruja;
-
-
-
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -150,6 +145,9 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
                 }
                 break;
             case R.id.boton_siguiente:
+                if (cancionActual>=listaCancion.size()-1){
+                    cancionActual=-1;
+                }
                 cancionActual++;
                 try {
                     reproducir();
@@ -158,6 +156,9 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
                 }
                 break;
             case R.id.boton_anterior:
+                if (cancionActual<=0){
+                    cancionActual=listaCancion.size();
+                }
                 cancionActual--;
                 try {
                     reproducir();
