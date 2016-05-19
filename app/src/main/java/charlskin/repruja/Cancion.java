@@ -4,7 +4,19 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by Aniki on 27/02/2016.
+ *
+ * Esta clase contiene todos los atributos que hemos considerado necesarios para una cancion
+ *
+ * Variables:
+ * titulo - nombre de la canción
+ * artista - nombre del grupo o artista
+ * ruta - ruta absoluta de la canción en el dispositivo
+ * rutaImagen - ruta absoluta de la portada del album en caso de que tenga, si no tiene sera "null"
+ *
+ *
+ * Autores:
+ * Juan Lendinez Sanchez
+ * Rafael Megales Anguita
  */
 public class Cancion implements Parcelable{
     private String titulo;
@@ -33,6 +45,12 @@ public class Cancion implements Parcelable{
     public String getRutaImagen() {
         return rutaImagen;
     }
+
+    /**
+     * Al implementar la clase como Parceable necesitabamos sobrecargar las siguientes funciones
+     * con el fin de pasar canciones entre actividades, estas funciones permiten el paso de array de
+     * objetos de la clase cancion entre actividades
+     */
 
     @Override
     public int describeContents() {
