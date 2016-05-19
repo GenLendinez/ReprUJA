@@ -1,14 +1,19 @@
 package charlskin.repruja;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.support.annotation.DrawableRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -23,6 +28,7 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
     private Handler mago=new Handler();
     private ImageButton botonplay,botonnext,botonprevious;
     private TextView campoTitulo,campoArtista,duracionAct,duracionTo;
+    private ImageView imageSong;
     private SeekBar barra_duracion;
     private Timer mei= new Timer();
     private String tituloActual,artistaActual,rutaActual;
@@ -43,8 +49,11 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
         }
         reproductor=new MediaPlayer();
         botonplay=(ImageButton) findViewById(R.id.boton_play);
+        botonplay.setImageResource(R.drawable.pauseb);
+        botonplay.setBackground(null);
         gestorHilos= Executors.newScheduledThreadPool(1);
         botonnext=(ImageButton) findViewById(R.id.boton_siguiente);
+        imageSong=(ImageView) findViewById(R.id.image_Song);
         barra_duracion=(SeekBar) findViewById(R.id.dura_cancion);
         duracionAct=(TextView) findViewById(R.id.duracionActualizada);
         duracionTo=(TextView)findViewById(R.id.duracionTotal);
@@ -85,6 +94,16 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
             }
         }
         try {
+            if (!listaCancion.get(cancionActual).getRutaImagen().equals("null")){
+                System.out.println(listaCancion.get(cancionActual).getRutaImagen());
+                File imgFile = new File(listaCancion.get(cancionActual).getRutaImagen());
+                if (imgFile.exists()) {
+                    Bitmap bitImage = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    imageSong.setImageBitmap(bitImage);
+                }
+            }else{
+                imageSong.setImageResource(R.drawable.nosong);
+            }
             campoArtista.setText(artistaActual);
             campoTitulo.setText(tituloActual);
             reproductor.setDataSource(rutaActual);
@@ -99,13 +118,25 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
                         @Override
                         public void run() {
                             segundos=reproductor.getCurrentPosition()/1000;
-                            minutos=segundos / 60;
+                            minutos = segundos /60;
                             segundos= segundos % 60;
                             duracionAct.setText(minutos+":"+segundos);
                             segundosTo=reproductor.getDuration()/1000;
                             minutosTo=segundosTo/60;
                             segundosTo=segundosTo%60;
-                            duracionTo.setText((minutosTo-minutos)+":"+(segundosTo-segundos));
+                            segundosTo=(segundosTo-segundos);
+                            segundosTo=segundosTo%60;
+                            minutosTo=minutosTo-minutos;
+                            duracionTo.setText((minutosTo)+":"+segundosTo);
+                            if (minutosTo==0 && segundosTo==0){
+                                cancionActual++;
+                                cancionActual=cancionActual%listaCancion.size();
+                                try {
+                                    reproducir();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
                     });
                 }
@@ -121,6 +152,7 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
         }
     }
     void reproducir() throws IOException {
+        botonplay.setImageResource(R.drawable.pauseb);
         campoArtista.setText(listaCancion.get(cancionActual).getArtista());
         campoTitulo.setText(listaCancion.get(cancionActual).getTitulo());
         reproductor.stop();
@@ -134,12 +166,12 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.boton_play:
-                if (!reproduciendo ) {
-                    botonplay.setImageResource(R.drawable.play_64);
+                if (!reproduciendo) {
+                    botonplay.setImageResource(R.drawable.pauseb);
                     reproductor.start();
                     reproduciendo=true;
                 }else{
-                    botonplay.setImageResource(R.drawable.pauseb);
+                    botonplay.setImageResource(R.drawable.play_64);
                     reproductor.pause();
                     reproduciendo=false;
                 }
@@ -165,9 +197,6 @@ public class Menu_reproductor_audio extends AppCompatActivity implements View.On
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                break;
-            case R.id.dura_cancion:
-                System.out.println("pene");
                 break;
         }
     }

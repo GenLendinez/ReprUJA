@@ -34,7 +34,7 @@ public class Audio extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio);
         vistaCanciones=(ListView)findViewById(R.id.listaCanciones);
-        listaCancionesN=new ArrayList<String>(); // -.-
+        listaCancionesN=new ArrayList<String>();
         listaCanciones=new ArrayList<Cancion>();
         getListaCanciones();
         adaptador= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listaCancionesN);
@@ -52,24 +52,30 @@ public class Audio extends AppCompatActivity {
     }
     public void getListaCanciones() {
         ContentResolver musicResolver = getContentResolver();
-        Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
+        Cursor musicCursor = musicResolver.query(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null,
+                null, null, null);
         if(musicCursor!=null && musicCursor.moveToFirst()){
             int titleColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.TITLE);
             int artistColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.ARTIST);
             int path_fileC= musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+            int path_image = musicCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART);
             do {
                 String path_file= musicCursor.getString(path_fileC); // ruta absoluta
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
-                listaCanciones.add(new Cancion(thisTitle,thisArtist,path_file));
+                String pathImage = "null";
+                if (path_image!=-1) {
+                    pathImage = musicCursor.getString(path_image);
+                }
+                listaCanciones.add(new Cancion(thisTitle,thisArtist,path_file,pathImage));
                 listaCancionesN.add(thisTitle);
             }
             while (musicCursor.moveToNext());
         }
         musicCursor.close();
+
 
     }
 }

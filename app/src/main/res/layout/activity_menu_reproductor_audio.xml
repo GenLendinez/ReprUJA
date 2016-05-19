@@ -12,8 +12,6 @@
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:id="@+id/boton_play"
-        android:background="@drawable/play_64"
-
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
@@ -47,8 +45,8 @@
         android:textSize="30sp"
         android:id="@+id/campo_titulo"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="match_parent"
@@ -87,5 +85,13 @@
         android:layout_above="@+id/dura_cancion"
         android:layout_alignRight="@+id/dura_cancion"
         android:layout_alignEnd="@+id/dura_cancion" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/image_Song"
+        android:scaleType="fitXY"
+        android:background="@drawable/play_64"
+        android:alpha="0.3" />
 
 </RelativeLayout>
